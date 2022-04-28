@@ -1,6 +1,14 @@
+using hydrants.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var dbVersion = new MariaDbServerVersion(builder.Configuration.GetValue<string>("dbVersion"));
+var connString = builder.Configuration.GetConnectionString("SiteDbContext");
+
+builder.Services.AddDbContext<SiteDbContext>(opt => opt.UseMySql(connString, dbVersion));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
